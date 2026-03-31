@@ -18,7 +18,7 @@ const contactInfo = [
   {
     icon: MapPin,
     label: "Localização",
-    value: "Brasil",
+    value: "Espírito Santo, Brasil",
     href: null,
   },
 ]
@@ -43,19 +43,32 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+
+    const formData = new FormData(e.currentTarget)
     
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    
-    // Reset form after showing success message
-    setTimeout(() => {
-      setIsSubmitted(false)
-      const form = e.target as HTMLFormElement
-      form.reset()
-    }, 3000)
+    // Sua chave do Web3Forms já configurada abaixo:
+    formData.append("access_key", "b56063e3-22b9-47e2-929b-6043ce92085e")
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      })
+
+      if (response.ok) {
+        setIsSubmitted(true)
+        const form = e.target as HTMLFormElement
+        form.reset()
+      } else {
+        alert("Ocorreu um erro ao enviar. Tente novamente mais tarde.")
+      }
+    } catch (error) {
+      alert("Erro na conexão. Verifique sua internet.")
+    } finally {
+      setIsSubmitting(false)
+      // Remove a mensagem de sucesso após 5 segundos
+      setTimeout(() => setIsSubmitted(false), 5000)
+    }
   }
 
   return (
@@ -74,7 +87,7 @@ export function ContactSection() {
           </div>
 
           <div className="grid lg:grid-cols-5 gap-12">
-            {/* Contact Info */}
+            {/* Informações de Contato Esquerda */}
             <div className="lg:col-span-2 space-y-8">
               <div className="space-y-6">
                 {contactInfo.map((item) => (
@@ -118,7 +131,7 @@ export function ContactSection() {
               </div>
             </div>
 
-            {/* Contact Form */}
+            {/* Formulário Direita */}
             <div className="lg:col-span-3">
               <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 md:p-8">
                 <FieldGroup className="space-y-6">
