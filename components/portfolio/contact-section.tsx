@@ -32,7 +32,7 @@ const socialLinks = [
   {
     icon: Linkedin,
     label: "LinkedIn",
-    href: "www.linkedin.com/in/pedro-costa-56042839a",
+    href: "https://www.linkedin.com/in/pedro-costa-56042839a/",
   },
 ]
 
